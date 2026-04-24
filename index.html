@@ -533,6 +533,14 @@
     color: var(--ink);
     font-weight: 600;
   }
+  .dual-card p .inline-link {
+    color: var(--c2);
+    text-decoration: none;
+    font-weight: 600;
+    border-bottom: 1px solid currentColor;
+    transition: color 0.2s;
+  }
+  .dual-card p .inline-link:hover { color: var(--c1); }
 
   .dual-btn {
     display: inline-flex;
@@ -872,16 +880,26 @@
 <section class="dual">
   <div class="dual-grid">
 
-    <!-- Left: Join the Study (Speaker 지원) -->
+    <!-- Left: Join the Study (Speaker 지원 폼) -->
     <div class="dual-card dual-card--join">
       <span class="num">— Join the Study</span>
       <h3>나누고 싶은 <em>인사이트</em>가 있으신가요?</h3>
-      <p>
-        운영 노하우, 현장에서 얻은 배움, 새롭게 시도해본 방법 — 무엇이든 환영이에요.<br>
-        인사이트 스피커로 참여하고 싶으시다면<br>
-        스터디 리더 <strong>혜림</strong>에게 언제든 편하게 연락주세요.
-      </p>
-      <a class="dual-btn" href="https://day1c.slack.com/team/U0AAGPUNU9G" target="_blank" rel="noopener">연락하기 <span class="arrow">→</span></a>
+      <p>운영 노하우, 현장에서 얻은 배움, 새롭게 시도해본 방법 — 무엇이든 환영이에요.<br>인사이트 스피커로 참여하고 싶으시다면 아래 신청서를 작성해주세요.<br>또는 스터디 리더 <a class="inline-link" href="https://day1c.slack.com/team/U0AAGPUNU9G" target="_blank" rel="noopener">혜림</a>에게 언제든 편하게 연락주세요 :)</p>
+      <form class="dual-form" id="speaker-form">
+        <div class="field">
+          <label for="spk-name">이름</label>
+          <input type="text" id="spk-name" placeholder="이름 또는 닉네임" required>
+        </div>
+        <div class="field">
+          <label for="spk-topic">공유하고 싶은 주제</label>
+          <input type="text" id="spk-topic" placeholder="예: 매뉴얼 업데이트 사례 공유" required>
+        </div>
+        <div class="field">
+          <label for="spk-note">한마디 (선택)</label>
+          <textarea id="spk-note" placeholder="주제 관련 배경이나 간단한 소개"></textarea>
+        </div>
+        <button type="submit" class="dual-btn dual-btn--grad">신청하기 <span class="arrow">→</span></button>
+      </form>
     </div>
 
     <!-- Right: Topic Suggestions (주제 제안) -->
@@ -933,18 +951,24 @@
     });
   });
 
-  // Topic suggestion form — posts to Google Apps Script → Sheet
+  // Google Apps Script endpoint (both forms share this)
   const FORM_ENDPOINT = 'https://script.google.com/macros/s/AKfycbzJcN1q6NxnTnVO4pPYOfJOBRuHbcR7ugPMGe158zFHCWNnnkrPKEBZg_xdd-p-A58Ftg/exec';
-  const topicForm = document.getElementById('topic-form');
-  if (topicForm) {
-    topicForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const topic = document.getElementById('topic').value.trim();
-      const reason = document.getElementById('reason').value.trim();
-      const proposer = document.getElementById('proposer').value.trim();
-      if (!topic) return;
 
-      const btn = topicForm.querySelector('button[type=submit]');
+  function bindForm(formId, fieldIds, typeValue, successText) {
+    const form = document.getElementById(formId);
+    if (!form) return;
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const data = { type: typeValue };
+      let allRequiredFilled = true;
+      for (const [param, id] of Object.entries(fieldIds)) {
+        const el = document.getElementById(id);
+        data[param] = el.value.trim();
+        if (el.required && !data[param]) allRequiredFilled = false;
+      }
+      if (!allRequiredFilled) return;
+
+      const btn = form.querySelector('button[type=submit]');
       const originalHTML = btn.innerHTML;
       btn.disabled = true;
       btn.innerHTML = '전송 중…';
@@ -953,10 +977,10 @@
         await fetch(FORM_ENDPOINT, {
           method: 'POST',
           mode: 'no-cors',
-          body: new URLSearchParams({ topic, reason, proposer })
+          body: new URLSearchParams(data)
         });
-        btn.innerHTML = '✓ 제안 완료!';
-        topicForm.reset();
+        btn.innerHTML = successText;
+        form.reset();
         setTimeout(() => {
           btn.innerHTML = originalHTML;
           btn.disabled = false;
@@ -968,6 +992,20 @@
       }
     });
   }
+
+  // Right form — 주제 제안
+  bindForm('topic-form',
+    { topic: 'topic', reason: 'reason', proposer: 'proposer' },
+    '주제제안',
+    '✓ 제안 완료!'
+  );
+
+  // Left form — 스피커 지원
+  bindForm('speaker-form',
+    { name: 'spk-name', topic: 'spk-topic', note: 'spk-note' },
+    '스피커지원',
+    '✓ 신청 완료!'
+  );
 </script>
 
 </body>
