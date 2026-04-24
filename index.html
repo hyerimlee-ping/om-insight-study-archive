@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OM Insight Study 아카이브</title>
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --c1: #C96988;   /* dusty rose */
+    --c2: #8A63B8;   /* plum */
+    --c3: #4E9A9A;   /* sage teal */
+    --c4: #6B9E72;   /* forest sage */
+    --c5: #C89447;   /* warm ochre */
+    --c6: #C27458;   /* terracotta */
+
+    --c1-soft: #F5E3EA;
+    --c2-soft: #EDE4F5;
+    --c3-soft: #DDEEEE;
+    --c4-soft: #E3EDDF;
+    --c5-soft: #F3E9D6;
+    --c6-soft: #F2E0D6;
+
+    --ink: #17171C;
+    --ink-2: #45454F;
+    --ink-3: #8A8A94;
+    --ink-4: #C4C4CC;
+
+    --bg: #FAF7F2;
+    --bg-2: #F3EEE6;
+    --card: #FFFFFF;
+    --border: #E8E2D6;
+    --border-2: #D5CDBD;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    color: var(--ink);
+    background: var(--bg);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  body { min-height: 100vh; }
+  a { color: inherit; }
+
+  .serif { font-family: 'Fraunces', 'Pretendard', serif; font-weight: 300; }
+  .mono-label {
+    font-size: 11px;
+    letter-spacing: 2.2px;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--ink-3);
+  }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    padding: 96px 48px 120px;
+    background: var(--bg);
+    overflow: hidden;
+    border-bottom: 1px solid var(--border);
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    width: 520px; height: 520px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--c1) 0%, transparent 65%);
+    opacity: 0.18;
+    top: -180px; right: -120px;
+    filter: blur(20px);
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    width: 420px; height: 420px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--c2) 0%, transparent 65%);
+    opacity: 0.14;
+    bottom: -180px; left: -80px;
+    filter: blur(20px);
+  }
+  .hero-inner { position: relative; max-width: 1200px; margin: 0 auto; z-index: 1; }
+
+  .hero .eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 48px;
+  }
+  .hero .eyebrow .rule {
+    width: 40px; height: 1px; background: var(--ink-3);
+  }
+  .hero .eyebrow .text {
+    font-size: 11px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--ink-2);
+  }
+
+  .hero h1 {
+    font-family: 'Pretendard', sans-serif;
+    font-size: 76px;
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -2.2px;
+    color: var(--ink);
+    margin-bottom: 28px;
+  }
+  .hero h1 em {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 500;
+    background: linear-gradient(135deg, var(--c1) 0%, var(--c2) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    padding: 0 4px;
+  }
+
+  .hero p.subtitle {
+    font-size: 17px;
+    color: var(--ink-2);
+    line-height: 1.7;
+    max-width: 580px;
+    font-weight: 400;
+  }
+
+  /* STATS */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    max-width: 1200px;
+    margin: -60px auto 0;
+    padding: 0 48px;
+    position: relative;
+    z-index: 2;
+  }
+  .stat {
+    background: var(--card);
+    padding: 32px 32px;
+    border: 1px solid var(--border);
+    border-right: none;
+    transition: background 0.2s;
+  }
+  .stat:first-child { border-radius: 14px 0 0 14px; }
+  .stat:last-child { border-radius: 0 14px 14px 0; border-right: 1px solid var(--border); }
+  .stat:hover { background: #FDFCF9; }
+
+  .stat .label {
+    font-size: 10.5px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    font-weight: 600;
+    margin-bottom: 14px;
+  }
+  .stat .value {
+    font-family: 'Fraunces', serif;
+    font-size: 40px;
+    font-weight: 300;
+    color: var(--ink);
+    letter-spacing: -1px;
+    line-height: 1;
+  }
+  .stat .value span {
+    font-family: 'Pretendard', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink-3);
+    margin-left: 6px;
+    letter-spacing: 0;
+  }
+
+  /* SECTION */
+  .section {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 96px 48px 40px;
+  }
+  .section-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 48px;
+    gap: 32px;
+    flex-wrap: wrap;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-heading .num {
+    font-family: 'Fraunces', serif;
+    font-size: 13px;
+    font-style: italic;
+    color: var(--ink-3);
+    font-weight: 400;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+    display: block;
+  }
+  .section-heading h2 {
+    font-size: 32px;
+    font-weight: 500;
+    letter-spacing: -0.8px;
+    color: var(--ink);
+    line-height: 1.2;
+  }
+
+  .filter { display: flex; gap: 6px; flex-wrap: wrap; }
+  .filter button {
+    border: 1px solid var(--border);
+    background: transparent;
+    padding: 8px 16px;
+    border-radius: 999px;
+    font-size: 12.5px;
+    font-weight: 500;
+    color: var(--ink-2);
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.2s;
+    letter-spacing: -0.1px;
+  }
+  .filter button:hover { border-color: var(--ink-2); color: var(--ink); }
+  .filter button.active {
+    background: var(--ink);
+    color: var(--bg);
+    border-color: var(--ink);
+  }
+
+  /* GRID */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 20px;
+  }
+
+  /* CARD */
+  .card {
+    position: relative;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px 30px 28px;
+    transition: all 0.3s cubic-bezier(.2,.7,.2,1);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .card:hover {
+    transform: translateY(-3px);
+    border-color: var(--accent, var(--ink-2));
+    box-shadow: 0 24px 48px -20px rgba(23, 23, 28, 0.12);
+  }
+
+  .card .episode-num {
+    position: absolute;
+    top: 24px; right: 28px;
+    font-family: 'Fraunces', serif;
+    font-size: 56px;
+    font-weight: 300;
+    line-height: 1;
+    color: var(--accent, var(--c1));
+    opacity: 0.22;
+    letter-spacing: -2px;
+    transition: opacity 0.3s;
+  }
+  .card:hover .episode-num { opacity: 0.5; }
+
+  .card .card-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--accent, var(--c1));
+    margin-bottom: 20px;
+  }
+  .card .card-label::before {
+    content: '';
+    width: 20px; height: 1px;
+    background: var(--accent, var(--c1));
+  }
+
+  .card h3 {
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 1.35;
+    letter-spacing: -0.5px;
+    margin-bottom: 20px;
+    color: var(--ink);
+    max-width: 88%;
+  }
+
+  .card .meta {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 13px;
+    color: var(--ink-2);
+    margin-bottom: 18px;
+  }
+  .card .meta .row {
+    display: flex;
+    gap: 10px;
+    align-items: baseline;
+  }
+  .card .meta .k {
+    font-size: 10.5px;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--ink-3);
+    min-width: 64px;
+  }
+  .card .meta .v {
+    font-weight: 500;
+    color: var(--ink);
+  }
+
+  .card .summary {
+    font-size: 14px;
+    color: var(--ink-2);
+    line-height: 1.65;
+    margin-bottom: 22px;
+    flex: 1;
+  }
+
+  .card .tags {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+  }
+  .card .tag {
+    font-size: 11.5px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 6px;
+    background: var(--tag-bg, var(--c1-soft));
+    color: var(--accent, var(--c1));
+    letter-spacing: -0.1px;
+  }
+
+  .card .actions {
+    display: flex;
+    gap: 8px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    margin-top: auto;
+  }
+  .card .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0;
+    background: transparent;
+    border: none;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent, var(--ink));
+    text-decoration: none;
+    cursor: pointer;
+    font-family: inherit;
+    transition: gap 0.2s;
+    letter-spacing: -0.1px;
+  }
+  .card .btn .arrow { transition: transform 0.2s; }
+  .card .btn:hover { gap: 12px; }
+  .card .btn:hover .arrow { transform: translateX(2px); }
+  .card .btn[disabled] {
+    color: var(--ink-3);
+    cursor: default;
+  }
+  .card .btn[disabled]:hover { gap: 8px; }
+  .card .btn[disabled]:hover .arrow { transform: none; }
+
+  .card.scheduled .card-label::after {
+    content: '예정';
+    font-size: 10px;
+    padding: 2px 8px;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    letter-spacing: 0;
+    text-transform: none;
+    font-weight: 600;
+    margin-left: auto;
+  }
+
+  /* Coming soon cards — more minimal */
+  .card.coming {
+    background: linear-gradient(180deg, var(--card) 0%, var(--bg-2) 140%);
+  }
+  .card.coming .episode-num { opacity: 0.18; }
+
+  /* DOCS */
+  .docs {
+    max-width: 1200px;
+    margin: 60px auto 40px;
+    padding: 0 48px;
+  }
+  .docs-box {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 40px 44px;
+  }
+  .docs-header { margin-bottom: 28px; }
+  .docs-header .num {
+    font-family: 'Fraunces', serif;
+    font-size: 13px;
+    font-style: italic;
+    color: var(--ink-3);
+    margin-bottom: 8px;
+    display: block;
+  }
+  .docs-header h3 {
+    font-size: 24px;
+    font-weight: 500;
+    letter-spacing: -0.5px;
+    margin-bottom: 6px;
+  }
+  .docs-header .desc { font-size: 14px; color: var(--ink-3); }
+
+  .docs-list { display: flex; flex-direction: column; gap: 2px; }
+  .doc-link {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 18px 4px;
+    border-bottom: 1px solid var(--border);
+    text-decoration: none;
+    color: var(--ink);
+    transition: all 0.2s;
+    font-size: 14.5px;
+    font-weight: 500;
+  }
+  .doc-link:last-child { border-bottom: none; }
+  .doc-link:hover { padding-left: 12px; color: var(--c2); }
+  .doc-link .num {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 13px;
+    color: var(--ink-3);
+    min-width: 32px;
+  }
+  .doc-link .arrow { margin-left: auto; color: var(--ink-3); transition: transform 0.2s; }
+  .doc-link:hover .arrow { transform: translateX(4px); color: var(--c2); }
+
+  /* DUAL — Join + Suggest */
+  .dual {
+    max-width: 1200px;
+    margin: 80px auto 40px;
+    padding: 0 48px;
+  }
+  .dual-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    align-items: stretch;
+  }
+  .dual-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 48px 44px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+  .dual-card--join {
+    background: linear-gradient(135deg, #FFFFFF 0%, var(--bg-2) 100%);
+  }
+  .dual-card--join::before {
+    content: '';
+    position: absolute;
+    width: 320px; height: 320px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--c1) 0%, transparent 70%);
+    opacity: 0.14;
+    top: -120px; right: -80px;
+    pointer-events: none;
+  }
+  .dual-card--join::after {
+    content: '';
+    position: absolute;
+    width: 240px; height: 240px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--c2) 0%, transparent 70%);
+    opacity: 0.10;
+    bottom: -120px; left: -40px;
+    pointer-events: none;
+  }
+  .dual-card > * { position: relative; }
+
+  .dual-card .num {
+    font-family: 'Fraunces', serif;
+    font-size: 12.5px;
+    font-style: italic;
+    color: var(--ink-3);
+    display: block;
+    margin-bottom: 14px;
+  }
+  .dual-card h3 {
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: -0.7px;
+    margin-bottom: 16px;
+    line-height: 1.3;
+  }
+  .dual-card h3 em {
+    font-family: inherit;
+    font-style: normal;
+    font-weight: inherit;
+    background: linear-gradient(135deg, var(--c1) 0%, var(--c2) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .dual-card p {
+    font-size: 14.5px;
+    color: var(--ink-2);
+    line-height: 1.7;
+    margin-bottom: 28px;
+  }
+  .dual-card p strong {
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  .dual-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 28px;
+    background: var(--ink);
+    color: var(--bg);
+    border: none;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.2s;
+    letter-spacing: -0.1px;
+    align-self: flex-start;
+  }
+  .dual-btn .arrow { transition: transform 0.2s; }
+  .dual-btn:hover { gap: 14px; transform: translateY(-2px); box-shadow: 0 12px 28px -8px rgba(23, 23, 28, 0.25); }
+  .dual-btn:hover .arrow { transform: translateX(3px); }
+  .dual-btn--grad {
+    background: linear-gradient(135deg, var(--c2) 0%, var(--c1) 100%);
+    color: white;
+  }
+  .dual-btn--grad:hover { box-shadow: 0 12px 28px -8px rgba(138, 99, 184, 0.4); }
+  .dual-btn[disabled] { opacity: 0.9; cursor: default; pointer-events: none; }
+
+  .dual-card--join .dual-btn { margin-top: auto; }
+
+  .dual-form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: auto;
+  }
+
+  .field label {
+    display: block;
+    font-size: 10.5px;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--ink-3);
+    margin-bottom: 8px;
+  }
+  .field input,
+  .field textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--ink);
+    background: var(--bg);
+    transition: all 0.2s;
+    resize: vertical;
+  }
+  .field input::placeholder,
+  .field textarea::placeholder { color: var(--ink-4); }
+  .field input:focus,
+  .field textarea:focus {
+    outline: none;
+    border-color: var(--c2);
+    background: var(--card);
+    box-shadow: 0 0 0 3px rgba(138, 99, 184, 0.1);
+  }
+  .field textarea { min-height: 84px; line-height: 1.55; font-family: inherit; }
+
+  @media (max-width: 900px) {
+    .dual-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 768px) {
+    .dual { padding: 0 28px; }
+    .dual-card { padding: 36px 28px; }
+  }
+
+  /* FOOTER */
+  footer {
+    max-width: 1200px;
+    margin: 40px auto 0;
+    padding: 40px 48px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  footer .brand {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 15px;
+    color: var(--ink-2);
+  }
+  footer .meta {
+    font-size: 12px;
+    color: var(--ink-3);
+    letter-spacing: 0.3px;
+  }
+
+  @media (max-width: 900px) {
+    .stats { grid-template-columns: repeat(2, 1fr); gap: 0; }
+    .stat { border-right: 1px solid var(--border); }
+    .stat:first-child { border-radius: 14px 14px 0 0; border-right: 1px solid var(--border); }
+    .stat:nth-child(2) { border-radius: 0; border-left: none; }
+    .stat:nth-child(3) { border-top: none; border-right: 1px solid var(--border); }
+    .stat:last-child { border-radius: 0 0 14px 14px; border-left: none; border-top: none; }
+  }
+  @media (max-width: 768px) {
+    .hero { padding: 72px 28px 96px; }
+    .hero h1 { font-size: 48px; letter-spacing: -1.5px; }
+    .stats { padding: 0 28px; }
+    .section { padding: 72px 28px 32px; }
+    .section-heading h2 { font-size: 26px; }
+    .docs { padding: 0 28px; }
+    .docs-box { padding: 32px 24px; }
+    footer { padding: 32px 28px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">
+      <span class="rule"></span>
+      <span class="text">Customer-Centric · Global Optimization · Growth of Our People</span>
+    </div>
+    <h1>OM <em>Insight</em> Study</h1>
+    <p class="subtitle">
+      OM들이 함께 쌓아가는 인사이트의 기록.<br>
+      회차별 자료와 핵심 인사이트를 한곳에서 확인하세요.
+    </p>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="stats">
+  <div class="stat">
+    <div class="label">Completed</div>
+    <div class="value">4<span>회 진행</span></div>
+  </div>
+  <div class="stat">
+    <div class="label">Last Session</div>
+    <div class="value">04.23<span>2026</span></div>
+  </div>
+  <div class="stat">
+    <div class="label">Next Up</div>
+    <div class="value">05.12<span>2026</span></div>
+  </div>
+  <div class="stat">
+    <div class="label">Insight Speakers</div>
+    <div class="value">6<span>명</span></div>
+  </div>
+</section>
+
+<!-- ARCHIVE -->
+<section class="section">
+  <div class="section-header">
+    <div class="section-heading">
+      <span class="num">— Chapter 01</span>
+      <h2>회차별 아카이브</h2>
+    </div>
+    <div class="filter">
+      <button class="active" data-filter="all">전체</button>
+      <button data-filter="ops">운영</button>
+      <button data-filter="comm">커뮤니케이션</button>
+      <button data-filter="tool">실습·도구</button>
+      <button data-filter="learn">AI·학습</button>
+    </div>
+  </div>
+
+  <div class="grid" id="grid">
+
+    <!-- #1 -->
+    <article class="card" style="--accent: var(--c1); --tag-bg: var(--c1-soft);" data-cat="ops">
+      <div class="episode-num">01</div>
+      <div class="card-label">Episode One</div>
+      <h3>OM의 의미와 운영 톺아보기</h3>
+      <div class="meta">
+        <div class="row"><span class="k">Date</span><span class="v">2026.03.25</span></div>
+        <div class="row"><span class="k">Speaker</span><span class="v">이혜림</span></div>
+      </div>
+      <div class="summary">
+        OM이라는 역할의 의미를 함께 짚어보고, 현재 운영 방식을 돌아본 첫 회차. 파트가 지향할 방향과 개선 포인트를 함께 도출.
+      </div>
+      <div class="tags">
+        <span class="tag">OM의 의미</span>
+        <span class="tag">운영 톺아보기</span>
+        <span class="tag">파트 방향성</span>
+      </div>
+      <div class="actions">
+        <a class="btn" href="https://hyerimlee-ping.github.io/om-insight-study-1/" target="_blank" rel="noopener">자료 보기 <span class="arrow">→</span></a>
+      </div>
+    </article>
+
+    <!-- #2 -->
+    <article class="card" style="--accent: var(--c2); --tag-bg: var(--c2-soft);" data-cat="ops">
+      <div class="episode-num">02</div>
+      <div class="card-label">Episode Two</div>
+      <h3>베스트 운영 사례 공유</h3>
+      <div class="meta">
+        <div class="row"><span class="k">Date</span><span class="v">2026.04.09</span></div>
+        <div class="row"><span class="k">Speaker</span><span class="v">이유진</span></div>
+      </div>
+      <div class="summary">
+        운영 중 성공적이었던 사례를 공유하고, 함께 적용할 부분을 같이 연습해보기.
+      </div>
+      <div class="tags">
+        <span class="tag">사례공유</span>
+        <span class="tag">베스트프랙티스</span>
+      </div>
+      <div class="actions">
+        <a class="btn" href="https://yjlee-cmyk.github.io/om-study/" target="_blank" rel="noopener">자료 보기 <span class="arrow">→</span></a>
+      </div>
+    </article>
+
+    <!-- #3 -->
+    <article class="card" style="--accent: var(--c3); --tag-bg: var(--c3-soft);" data-cat="comm">
+      <div class="episode-num">03</div>
+      <div class="card-label">Episode Three</div>
+      <h3>비즈니스 매너 (커뮤니케이션)</h3>
+      <div class="meta">
+        <div class="row"><span class="k">Date</span><span class="v">2026.04.22</span></div>
+        <div class="row"><span class="k">Speaker</span><span class="v">김오틸리아</span></div>
+      </div>
+      <div class="summary">
+        고객사 및 내부 협업에서 필요한 비즈니스 매너와 효과적인 커뮤니케이션 방법 알아보기.
+      </div>
+      <div class="tags">
+        <span class="tag">비즈니스매너</span>
+        <span class="tag">커뮤니케이션</span>
+      </div>
+      <div class="actions">
+        <a class="btn" href="https://docs.google.com/presentation/d/1mtBSS-ZRLzjmmWF0junH8pyHlHroHMlt5hsy-z3-XuY/edit" target="_blank" rel="noopener">자료 보기 <span class="arrow">→</span></a>
+      </div>
+    </article>
+
+    <!-- #4 -->
+    <article class="card" style="--accent: var(--c4); --tag-bg: var(--c4-soft);" data-cat="tool">
+      <div class="episode-num">04</div>
+      <div class="card-label">Episode Four</div>
+      <h3>패들렛 + 스터디 활용 사례</h3>
+      <div class="meta">
+        <div class="row"><span class="k">Date</span><span class="v">2026.04.23</span></div>
+        <div class="row"><span class="k">Speaker</span><span class="v">오수연</span></div>
+      </div>
+      <div class="summary">
+        패들렛을 활용한 스터디/실습 운영 사례를 공유하고, OM 업무에 적용할 수 있는 활용 팁을 정리.
+      </div>
+      <div class="tags">
+        <span class="tag">패들렛</span>
+        <span class="tag">실습도구</span>
+        <span class="tag">사례공유</span>
+      </div>
+      <div class="actions">
+        <a class="btn" href="https://suyeonoh-web.github.io/om-insight-study3/" target="_blank" rel="noopener">자료 보기 <span class="arrow">→</span></a>
+      </div>
+    </article>
+
+    <!-- #5 -->
+    <article class="card scheduled" style="--accent: var(--c5); --tag-bg: var(--c5-soft);" data-cat="learn">
+      <div class="episode-num">05</div>
+      <div class="card-label">Episode Five</div>
+      <h3>AI 스킬 이해도 높이기</h3>
+      <div class="meta">
+        <div class="row"><span class="k">Date</span><span class="v">2026.05.12</span></div>
+        <div class="row"><span class="k">Speaker</span><span class="v">김연수, 조경수</span></div>
+      </div>
+      <div class="summary">
+        OM 업무에 적용 가능한 AI 스킬과 실무 활용 가이드로 문과생 탈출!
+      </div>
+      <div class="tags">
+        <span class="tag">AI</span>
+        <span class="tag">학습스킬</span>
+      </div>
+      <div class="actions">
+        <button class="btn" disabled>진행 예정 <span class="arrow">→</span></button>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<!-- COMING SOON -->
+<section class="section" style="padding-top: 40px;">
+  <div class="section-header">
+    <div class="section-heading">
+      <span class="num">— Chapter 02</span>
+      <h2>Coming Soon</h2>
+    </div>
+    <div class="mono-label">Schedule TBD</div>
+  </div>
+
+  <div class="grid">
+
+    <article class="card coming" style="--accent: var(--c6); --tag-bg: var(--c6-soft);">
+      <div class="episode-num">06</div>
+      <div class="card-label">Coming Soon</div>
+      <h3>LD와의 협업 방법</h3>
+      <div class="meta">
+        <div class="row"><span class="k">Speaker</span><span class="v">김오틸리아</span></div>
+      </div>
+      <div class="summary">
+        LD와 원활하게 협업하기 위한 방법과 실무 팁을 공유할 예정.
+      </div>
+      <div class="tags">
+        <span class="tag">협업</span>
+        <span class="tag">LD</span>
+      </div>
+    </article>
+
+    <article class="card coming" style="--accent: var(--c1); --tag-bg: var(--c1-soft);">
+      <div class="episode-num">07</div>
+      <div class="card-label">Coming Soon</div>
+      <h3>회복탄력성</h3>
+      <div class="meta">
+        <div class="row"><span class="k">Speaker</span><span class="v">이혜림</span></div>
+      </div>
+      <div class="summary">
+        OM으로서의 마인드셋과 회복탄력성 강화에 대한 인사이트 공유 예정.
+      </div>
+      <div class="tags">
+        <span class="tag">마인드셋</span>
+        <span class="tag">셀프케어</span>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<!-- DUAL — Join + Suggest -->
+<section class="dual">
+  <div class="dual-grid">
+
+    <!-- Left: Join the Study (Speaker 지원) -->
+    <div class="dual-card dual-card--join">
+      <span class="num">— Join the Study</span>
+      <h3>나누고 싶은 <em>인사이트</em>가 있으신가요?</h3>
+      <p>
+        운영 노하우, 현장에서 얻은 배움, 새롭게 시도해본 방법 — 무엇이든 환영이에요.<br>
+        인사이트 스피커로 참여하고 싶으시다면<br>
+        스터디 리더 <strong>혜림</strong>에게 언제든 편하게 연락주세요.
+      </p>
+      <a class="dual-btn" href="#slack-dm-link" target="_blank" rel="noopener">연락하기 <span class="arrow">→</span></a>
+    </div>
+
+    <!-- Right: Topic Suggestions (주제 제안) -->
+    <div class="dual-card dual-card--suggest">
+      <span class="num">— Topic Suggestions</span>
+      <h3>듣고 싶은 <em>교육</em>을 제안해 주세요</h3>
+      <p>OM 파트가 함께 배우면 좋을 주제가 있다면 알려주세요.<br>주신 제안은 다음 회차 기획에 반영될 수 있어요.</p>
+      <form class="dual-form" id="topic-form">
+        <div class="field">
+          <label for="topic">희망 주제</label>
+          <input type="text" id="topic" placeholder="예: 고객사 클레임 대응 실전 사례" required>
+        </div>
+        <div class="field">
+          <label for="reason">필요한 이유 (선택)</label>
+          <textarea id="reason" placeholder="어떤 상황이나 배경에서 필요한지 자유롭게 써주세요"></textarea>
+        </div>
+        <div class="field">
+          <label for="proposer">제안자 (선택)</label>
+          <input type="text" id="proposer" placeholder="이름 또는 닉네임">
+        </div>
+        <button type="submit" class="dual-btn dual-btn--grad">제안하기 <span class="arrow">→</span></button>
+      </form>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <div class="brand">Day1Company · OM Part</div>
+  <div class="meta">Internal Study Archive — Last updated 2026.04.24</div>
+</footer>
+
+<script>
+  const buttons = document.querySelectorAll('.filter button');
+  const cards = document.querySelectorAll('#grid .card');
+
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      buttons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const filter = btn.dataset.filter;
+      cards.forEach(card => {
+        if (filter === 'all' || (card.dataset.cat && card.dataset.cat.includes(filter))) {
+          card.style.display = '';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+  });
+
+  // Topic suggestion form — posts to Google Apps Script → Sheet
+  const FORM_ENDPOINT = 'https://script.google.com/macros/s/AKfycbzJcN1q6NxnTnVO4pPYOfJOBRuHbcR7ugPMGe158zFHCWNnnkrPKEBZg_xdd-p-A58Ftg/exec';
+  const topicForm = document.getElementById('topic-form');
+  if (topicForm) {
+    topicForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const topic = document.getElementById('topic').value.trim();
+      const reason = document.getElementById('reason').value.trim();
+      const proposer = document.getElementById('proposer').value.trim();
+      if (!topic) return;
+
+      const btn = topicForm.querySelector('button[type=submit]');
+      const originalHTML = btn.innerHTML;
+      btn.disabled = true;
+      btn.innerHTML = '전송 중…';
+
+      try {
+        await fetch(FORM_ENDPOINT, {
+          method: 'POST',
+          mode: 'no-cors',
+          body: new URLSearchParams({ topic, reason, proposer })
+        });
+        btn.innerHTML = '✓ 제안 완료!';
+        topicForm.reset();
+        setTimeout(() => {
+          btn.innerHTML = originalHTML;
+          btn.disabled = false;
+        }, 2800);
+      } catch (err) {
+        btn.innerHTML = originalHTML;
+        btn.disabled = false;
+        alert('전송에 실패했어요. 잠시 후 다시 시도해주세요.');
+      }
+    });
+  }
+</script>
+
+</body>
+</html>
