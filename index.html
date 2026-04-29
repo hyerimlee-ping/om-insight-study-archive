@@ -620,6 +620,47 @@
     .dual-card { padding: 36px 28px; }
   }
 
+  /* SEARCH */
+  .search-wrap {
+    margin-bottom: 24px;
+    position: relative;
+  }
+  .search-wrap::before {
+    content: '🔍';
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 13px;
+    pointer-events: none;
+  }
+  .search-input {
+    width: 100%;
+    padding: 11px 16px 11px 38px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--ink);
+    background: var(--card);
+    transition: all 0.2s;
+  }
+  .search-input::placeholder { color: var(--ink-4); }
+  .search-input:focus {
+    outline: none;
+    border-color: var(--c2);
+    background: var(--card);
+    box-shadow: 0 0 0 3px rgba(138, 99, 184, 0.1);
+  }
+  .no-results {
+    text-align: center;
+    padding: 60px 0;
+    color: var(--ink-3);
+    font-size: 14px;
+    display: none;
+    grid-column: 1 / -1;
+  }
+
   /* FOOTER */
   footer {
     max-width: 1200px;
@@ -715,6 +756,10 @@
       <button data-filter="tool">Tool 활용</button>
       <button data-filter="learn">AI·학습</button>
     </div>
+  </div>
+
+  <div class="search-wrap">
+    <input type="search" class="search-input" id="search-input" placeholder="세션명, 스피커, 키워드로 검색…">
   </div>
 
   <div class="grid" id="grid">
@@ -935,21 +980,36 @@
 <script>
   const buttons = document.querySelectorAll('.filter button');
   const cards = document.querySelectorAll('#grid .card');
+  const searchInput = document.getElementById('search-input');
+
+  let noResults = document.createElement('p');
+  noResults.className = 'no-results';
+  noResults.textContent = '검색 결과가 없어요 🔍';
+  document.getElementById('grid').appendChild(noResults);
+
+  function applyFilters() {
+    const query = searchInput.value.trim().toLowerCase();
+    const filter = document.querySelector('.filter button.active').dataset.filter;
+    let visible = 0;
+    cards.forEach(card => {
+      const matchesCat = filter === 'all' || (card.dataset.cat && card.dataset.cat.includes(filter));
+      const matchesSearch = !query || card.innerText.toLowerCase().includes(query);
+      const show = matchesCat && matchesSearch;
+      card.style.display = show ? '' : 'none';
+      if (show) visible++;
+    });
+    noResults.style.display = visible === 0 ? 'block' : 'none';
+  }
 
   buttons.forEach(btn => {
     btn.addEventListener('click', () => {
       buttons.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-      const filter = btn.dataset.filter;
-      cards.forEach(card => {
-        if (filter === 'all' || (card.dataset.cat && card.dataset.cat.includes(filter))) {
-          card.style.display = '';
-        } else {
-          card.style.display = 'none';
-        }
-      });
+      applyFilters();
     });
   });
+
+  searchInput.addEventListener('input', applyFilters);
 
   // Google Apps Script endpoint (both forms share this)
   const FORM_ENDPOINT = 'https://script.google.com/macros/s/AKfycbzJcN1q6NxnTnVO4pPYOfJOBRuHbcR7ugPMGe158zFHCWNnnkrPKEBZg_xdd-p-A58Ftg/exec';
