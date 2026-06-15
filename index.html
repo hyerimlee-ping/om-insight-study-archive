@@ -661,6 +661,55 @@
     grid-column: 1 / -1;
   }
 
+  /* FLOATING QUICK LINK */
+  .quick-link {
+    position: fixed;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 100;
+  }
+  .quick-link a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 18px 13px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-right: none;
+    border-radius: 12px 0 0 12px;
+    text-decoration: none;
+    box-shadow: -4px 4px 20px -6px rgba(23, 23, 28, 0.12);
+    transition: all 0.25s cubic-bezier(.2,.7,.2,1);
+  }
+  .quick-link a:hover {
+    background: linear-gradient(180deg, var(--c1) 0%, var(--c2) 100%);
+    border-color: transparent;
+    padding-left: 17px;
+    box-shadow: -6px 6px 28px -6px rgba(138, 99, 184, 0.3);
+  }
+  .quick-link .ql-icon {
+    font-size: 15px;
+    line-height: 1;
+    transition: transform 0.25s;
+  }
+  .quick-link a:hover .ql-icon { transform: scale(1.15); }
+  .quick-link .ql-text {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+    color: var(--ink-2);
+    transition: color 0.25s;
+  }
+  .quick-link a:hover .ql-text { color: white; }
+  @media (max-width: 768px) {
+    .quick-link { display: none; }
+  }
+
   /* FOOTER */
   footer {
     max-width: 1200px;
@@ -706,6 +755,14 @@
 </style>
 </head>
 <body>
+
+<!-- FLOATING QUICK LINK -->
+<div class="quick-link">
+  <a href="https://hyerimlee-ping.github.io/om-insight-study-attitude/" target="_blank" rel="noopener" title="학습자료 보기">
+    <span class="ql-icon">📖</span>
+    <span class="ql-text">학습자료</span>
+  </a>
+</div>
 
 <!-- HERO -->
 <section class="hero">
