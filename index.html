@@ -675,19 +675,18 @@
     align-items: center;
     gap: 8px;
     padding: 18px 13px;
-    background: var(--card);
-    border: 1px solid var(--border);
+    background: linear-gradient(180deg, var(--c1) 0%, var(--c2) 100%);
+    border: none;
     border-right: none;
     border-radius: 12px 0 0 12px;
     text-decoration: none;
-    box-shadow: -4px 4px 20px -6px rgba(23, 23, 28, 0.12);
+    box-shadow: -4px 6px 24px -4px rgba(138, 99, 184, 0.45);
     transition: all 0.25s cubic-bezier(.2,.7,.2,1);
   }
   .quick-link a:hover {
-    background: linear-gradient(180deg, var(--c1) 0%, var(--c2) 100%);
-    border-color: transparent;
     padding-left: 17px;
-    box-shadow: -6px 6px 28px -6px rgba(138, 99, 184, 0.3);
+    box-shadow: -6px 8px 32px -4px rgba(138, 99, 184, 0.55);
+    filter: brightness(1.08);
   }
   .quick-link .ql-icon {
     font-size: 15px;
@@ -702,7 +701,7 @@
     font-weight: 700;
     letter-spacing: 1.8px;
     text-transform: uppercase;
-    color: var(--ink-2);
+    color: white;
     transition: color 0.25s;
   }
   .quick-link a:hover .ql-text { color: white; }
