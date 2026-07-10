@@ -782,19 +782,19 @@
 <section class="stats">
   <div class="stat">
     <div class="label">Completed</div>
-    <div class="value">7<span>회 진행</span></div>
+    <div class="value">8<span>회 진행</span></div>
   </div>
   <div class="stat">
     <div class="label">Last Session</div>
-    <div class="value">06.08<span>2026</span></div>
-  </div>
-  <div class="stat">
-    <div class="label">Next Up</div>
     <div class="value">06.22<span>2026</span></div>
   </div>
   <div class="stat">
+    <div class="label">Next Up</div>
+    <div class="value">07.20<span>2026</span></div>
+  </div>
+  <div class="stat">
     <div class="label">Insight Speakers</div>
-    <div class="value">8<span>명</span></div>
+    <div class="value" id="stat-speakers">8<span>명</span></div>
   </div>
 </section>
 
@@ -974,7 +974,7 @@
     </article>
 
     <!-- #8 -->
-    <article class="card scheduled" style="--accent: var(--c3); --tag-bg: var(--c3-soft);" data-cat="ops">
+    <article class="card" style="--accent: var(--c3); --tag-bg: var(--c3-soft);" data-cat="ops">
       <div class="episode-num">08</div>
       <div class="card-label">Episode Eight</div>
       <h3>학습자와의 첫 만남,<br>신뢰를 주는 OT 만들기</h3>
@@ -1002,14 +1002,14 @@
       <h3>일 잘하는 사람은<br>멘탈을 관리합니다</h3>
 
       <div class="meta">
-        <div class="row"><span class="k">Date</span><span class="v">2026.07.01</span></div>
+        <div class="row"><span class="k">Date</span><span class="v">2026.07.20</span></div>
         <div class="row"><span class="k">Speaker</span><span class="v">이혜림</span></div>
       </div>
       <div class="summary">
         예상치 못한 변수, 까다로운 요청, 반복되는 스트레스 속에서도 중심을 잃지 않고 다시 일어서는 힘을 키워봅니다.
       </div>
       <div class="tags">
-        <span class="tag">멘탈관리</span>
+        <span class="tag">회복탄력성</span>
         <span class="tag">마인드셋</span>
       </div>
       <div class="actions">
@@ -1103,7 +1103,7 @@
 
 <footer>
   <div class="brand">Day1Company · OM Part</div>
-  <div class="meta">Internal Study Archive — Last updated 2026.06.12</div>
+  <div class="meta">Internal Study Archive — Last updated 2026.07.10</div>
 </footer>
 
 <script>
@@ -1115,6 +1115,18 @@
   noResults.className = 'no-results';
   noResults.textContent = '검색 결과가 없어요 🔍';
   document.getElementById('grid').appendChild(noResults);
+
+  // Insight Speakers — count unique speaker names across the archive (동명이인 중복 제외)
+  const speakerNames = new Set();
+  cards.forEach(card => {
+    const speakerRow = Array.from(card.querySelectorAll('.meta .row')).find(
+      row => row.querySelector('.k')?.textContent.trim() === 'Speaker'
+    );
+    const name = speakerRow?.querySelector('.v')?.textContent.trim();
+    if (name) speakerNames.add(name);
+  });
+  const speakersEl = document.getElementById('stat-speakers');
+  if (speakersEl) speakersEl.innerHTML = `${speakerNames.size}<span>명</span>`;
 
   function applyFilters() {
     const query = searchInput.value.trim().toLowerCase();
